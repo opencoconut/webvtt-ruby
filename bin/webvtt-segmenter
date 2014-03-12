@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "lib")
+require "optparse"
+require "webvtt"
+
+@options = {}
+opts = OptionParser.new do |opts|
+  opts.banner = %(Usage: webvtt-segmenter [--arg])
+
+  opts.on("-i", "--input [PATH]", "WebVTT or SRT file") do |path|
+    @options[:input] = path
+  end
+
+  opts.on("-b", "--base-url [URL]", "Base URL") do |url|
+    @options[:base_url] = url
+  end
+
+  opts.on("-t", "--target-duration [DUR]", "Duration of each segments. Default: 10") do |dur|
+    @options[:length] = dur.to_i
+  end
+
+  opts.on("-o", "--output [PATH]", "Path where WebVTT segments will be saved. Default: fileSequence-%05d.webvtt") do |path|
+    @options[:output] = path
+  end
+
+  opts.on("-m", "--playlist [PATH]", "Path where the playlist in m3u8 will be saved. Default: prog_index.m3u8") do |path|
+    @options[:playlist] = path
+  end
+end
+
+begin
+  opts.parse!
+  raise OptionParser::MissingArgument if @options.empty?
+  if ! @options[:input]
+    raise OptionParser::InvalidOption, "Missing argument --range"
+  end
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+  $stderr.puts $!.to_s
+  $stderr.puts opts
+  exit
+end
+
+input = @options.delete(:input)
+
+# convert srt to webvtt first
+if File.extname(input) == ".srt"
+  puts "Converting srt to webvtt format..."
+  input = WebVTT.convert_from_srt(input)
+end
+
+res = WebVTT.segment(input, @options)
+puts "Done"

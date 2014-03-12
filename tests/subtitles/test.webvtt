@@ -1,0 +1,70 @@
+WEBVTT
+X-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000
+
+00:00:29.000 --> 00:00:31.000 line:75%
+English subtitle 15 -Forced- (00:00:27.000)
+line:75%
+
+2
+00:00:31.000 --> 00:00:33.000 align:start line:0%
+English subtitle 16 -Unforced- (00:00:31.000)
+align:start line:0%
+
+00:00:33.000 --> 00:00:35.000 align:start line:50%
+English subtitle 17 -Unforced- (00:00:33.000)
+align:start line:50%
+
+00:00:35.000 --> 00:00:37.000 align:start line:100%
+English subtitle 18 -Unforced- (00:00:35.000)
+align:start line:100%
+
+00:00:37.000 --> 00:00:39.000 align:middle line:100%
+English subtitle 19 -Unforced- (00:00:37.000)
+align:middle line:100%
+
+00:00:39.000 --> 00:00:41.000 align:end line:100%
+English subtitle 20 -Forced- (00:00:39.000)
+align:end line:100%
+
+00:00:41.000 --> 00:00:43.000 align:end line:50%
+English subtitle 21 -Unforced- (00:00:41.000)
+align:end line:50%
+
+00:00:43.000 --> 00:00:45.000 align:end line:0%
+English subtitle 22 -Unforced- (00:00:43.000)
+align:end line:0%
+
+00:00:45.000 --> 00:00:47.000 align:middle line:0%
+English subtitle 23 -Unforced- (00:00:45.000)
+align:middle line:0%
+
+00:00:47.000 --> 00:00:49.000 align:middle line:50%
+English subtitle 24 -Unforced- (00:00:47.000)
+align:middle line:50%
+
+00:00:49.000 --> 00:00:51.000 align:middle line:100%
+English subtitle 25 -Forced- (00:00:49.000)
+align:middle line:100%
+
+00:00:51.000 --> 00:00:53.000 position:20% size:55%
+English subtitle 26 -Unforced- (00:00:51.000)
+position:20% size:55%
+
+00:00:53.000 --> 00:00:60.000
+English subtitle 27 -Unforced- (00:00:53.000)
+Special Characters
+œ∑´®†¥¨ˆøπ“
+åß∂ƒ©˙∆˚¬
+Ω≈ç√∫˜µ≤≥÷
+
+00:00:55.000 --> 00:00:57.000
+English subtitle 28 -Unforced- (00:00:55.000)
+Multilines
+line 3
+line 4
+line 5
+line 6
+
+00:00:57.000 --> 00:05:59.000
+English subtitle 29 -Forced- (00:00:57.000)
+1 Minute subtilte sample complete - will now repeat
