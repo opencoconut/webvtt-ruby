@@ -33,7 +33,7 @@ begin
   opts.parse!
   raise OptionParser::MissingArgument if @options.empty?
   if ! @options[:input]
-    raise OptionParser::InvalidOption, "Missing argument --range"
+    raise OptionParser::InvalidOption, "Missing argument --input"
   end
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   $stderr.puts $!.to_s
