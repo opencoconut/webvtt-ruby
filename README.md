@@ -1,6 +1,6 @@
-# WebVTT
+# WebVTT Ruby parser and segmenter
 
-The [WebVTT format](http://dev.w3.org/html5/webvtt/) is a standard captionning format used for HTML5 videos and HTTP Live Streaming (HLS) videos.
+The [WebVTT format](http://dev.w3.org/html5/webvtt/) is a standard captionning format used for HTML5 videos and HTTP Live Streaming (HLS).
 
 ## Installation
 
@@ -23,7 +23,7 @@ To parse a webvtt file:
 ```ruby
 require "webvtt"
 
-webvtt = WebVTT.read("path/sub.webtt")
+webvtt = WebVTT.read("path/sub.webvtt")
 webvtt.cues.each do |cue|
   puts "identifier: #{cue.identifier}"
   puts "Start: #{cue.start}"
@@ -114,8 +114,8 @@ Usage: bin/webvtt-segmenter [--arg]
 
 ## Author
 
-Bruno Celeste
+**Bruno Celeste**
 
-http://www.heywatchencoding.com
-bruno@heywatch.com
-[@sadikzzz](http://twitter.com/sadikzzz)
+* http://www.heywatchencoding.com
+* bruno@heywatch.com
+* [@sadikzzz](http://twitter.com/sadikzzz)
