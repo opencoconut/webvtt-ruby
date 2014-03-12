@@ -31,7 +31,6 @@ class ParserTest < Test::Unit::TestCase
     webvtt = WebVTT.read("tests/subtitles/test.webvtt")
     sub_webvtt_files = WebVTT::Segmenter.new(webvtt, :length => 5).split_to_files
     assert_equal 68, sub_webvtt_files.size
-
     assert_equal 31, sub_webvtt_files[0].total_length
 
     # clean up
@@ -47,6 +46,7 @@ class ParserTest < Test::Unit::TestCase
     assert File.exists?("test.m3u8")
     # clean up
     subs.each {|f| FileUtils.rm(f.filename)}
+    FileUtils.rm("test.m3u8")
   end
 
   def test_shortcut_method
@@ -54,6 +54,9 @@ class ParserTest < Test::Unit::TestCase
     assert_instance_of Array, res
     assert_equal 2, res.size
     assert_equal 35, res[1].size
+
+    # clean up
+    FileUtils.rm("prog_index.m3u8")
   end
 
   def test_segment_to_webvtt_files
