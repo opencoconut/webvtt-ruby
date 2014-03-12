@@ -56,15 +56,6 @@ class ParserTest < Test::Unit::TestCase
     assert_equal 35, res[1].size
   end
 
-  def test_segmenting_big_srt
-    #webvtt = WebVTT.convert_from_srt("tests/subtitles/big_srt.srt")
-    #res = WebVTT.segment(webvtt, :length => 10, :output => "tests/subtitles/big-%05d.webvtt", :playlist => "tests/subtitles/big.m3u8")
-    res = WebVTT.segment("tests/subtitles/big_srt.webvtt", :length => 10, :output => "/Users/sadikzzz/Sites/HLS/truedetective/subtitles/en-%05d.webvtt", :playlist => "/Users/sadikzzz/Sites/HLS/truedetective/subtitles/en.m3u8")
-    #assert_instance_of Array, res
-    #assert File.exists?("tests/subtitles/big.m3u8")
-    #assert Dir.glob("tests/subtitles/big-*.webvtt").size > 0
-  end
-
   def test_segment_to_webvtt_files
     return
     webvtt = WebVTT.read("tests/subtitles/test.webvtt")
