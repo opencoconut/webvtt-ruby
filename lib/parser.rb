@@ -42,7 +42,7 @@ module WebVTT
     end
 
     def to_webvtt
-      @content
+      [@header, @cues.map(&:to_webvtt)].flatten.join("\n\n")
     end
 
     def total_length
@@ -125,20 +125,13 @@ module WebVTT
         @identifier = lines[0]
         lines.shift
       end
-      lines.each_with_index do |line,i|
-        # first line is timestamp and style
-        if i == 0
-          if line =~ /([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}) -+> ([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/
-            @start = $1
-            @end = $2
-            @style = Hash[$3.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
-          end
-        else
-          # last line(s) is text
-          @text = lines[i..-1].join("\n")
-          break
-        end
+
+      if lines[0].match(/([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}) -+> ([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/)
+        @start = $1
+        @end = $2
+        @style = Hash[$3.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
       end
+      @text = lines[1..-1].join("\n")
     end
   end
 end

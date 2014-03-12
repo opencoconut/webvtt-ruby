@@ -85,6 +85,11 @@ class ParserTest < Test::Unit::TestCase
     assert_equal 2.0, webvtt.cues[2].length
   end
 
+  def test_to_webvtt
+    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    assert_equal webvtt.to_webvtt, File.read("tests/subtitles/test.webvtt")
+  end
+
   def test_reading_all_cues
     return
     webvtt = WebVTT.read("tests/subtitles/withnote.webvtt")
