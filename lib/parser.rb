@@ -55,10 +55,8 @@ module WebVTT
 
     def save(output=nil)
       output ||= @path.gsub(".srt", ".webvtt")
-      res = [@header]
-      @cues.each {|cue| res << cue.to_webvtt}
 
-      File.open(output, "w") {|f| f.write(res.join("\n\n"))}
+      File.open(output, "w") {|f| f.write(to_webvtt)}
       return output
     end
 
@@ -85,14 +83,22 @@ module WebVTT
   end
 
   class Cue
-    attr_reader :identifier, :start, :end, :style, :text
+    attr_accessor :identifier, :start, :end, :style, :text
+
     def initialize(cue)
       @content = cue
       parse
     end
 
     def to_webvtt
-      @content
+      res = ""
+      if @identifier
+        res << "#{@identifier}\n"
+      end
+      res << "#{@start} --> #{@end} #{@style.map{|k,v| "#{k}:#{v}"}.join(" ")}".strip + "\n"
+      res << @text
+
+      res
     end
 
     def self.timestamp_in_sec(timestamp)

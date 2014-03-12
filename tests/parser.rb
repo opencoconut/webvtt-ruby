@@ -85,9 +85,37 @@ class ParserTest < Test::Unit::TestCase
     assert_equal 2.0, webvtt.cues[2].length
   end
 
-  def test_to_webvtt
+  def test_file_to_webvtt
     webvtt = WebVTT.read("tests/subtitles/test.webvtt")
     assert_equal webvtt.to_webvtt, File.read("tests/subtitles/test.webvtt")
+  end
+
+  def test_cue_to_webvtt
+    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    assert_equal webvtt.cues[0].to_webvtt, %(00:00:29.000 --> 00:00:31.000 line:75%
+English subtitle 15 -Forced- (00:00:27.000)
+line:75%)
+    assert_equal webvtt.cues[1].to_webvtt, %(2
+00:00:31.000 --> 00:00:33.000 align:start line:0%
+English subtitle 16 -Unforced- (00:00:31.000)
+align:start line:0%)
+  end
+
+  def test_updating_webvtt
+    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    cue = webvtt.cues[0]
+    cue.identifier = "1"
+    cue.text = "The text should change"
+    cue.start = "00:00:01.000"
+    cue.style = {}
+    webvtt.cues = [cue]
+
+    assert_equal webvtt.to_webvtt, %(WEBVTT
+X-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000
+
+1
+00:00:01.000 --> 00:00:31.000
+The text should change)
   end
 
   def test_reading_all_cues
