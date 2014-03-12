@@ -80,7 +80,7 @@ module WebVTT
         else
           url = ::File.join(@options[:base_url], file.filename)
         end
-        lines << %(#EXTINF:#{sprintf("%.5f", total_length)},
+        lines << %(#EXTINF:#{total_length.round},
 #{url})
       end
 
