@@ -111,8 +111,8 @@ module WebVTT
         filename = sprintf(@options[:output], i)
         header = @webvtt.header
 
-        if !header.include?("X-TIMESTAMP-MAP=MPEGTS")
-          header << "\nX-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000"
+        if !header.include?("X-TIMESTAMP-MAP")
+          header << "\nX-TIMESTAMP-MAP=MPEGTS:000000,LOCAL:00:00:00.000"
         end
 
         content = [header, f.map{|c| c.to_webvtt }.join("\n\n")].join("\n\n")
