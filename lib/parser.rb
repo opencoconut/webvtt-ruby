@@ -73,7 +73,7 @@ module WebVTT
 
       @cues = []
       cues.each do |cue|
-        cue_parsed = Cue.new(cue)
+        cue_parsed = Cue.new(cue.strip)
         if !cue_parsed.text.nil?
           @cues << cue_parsed
         end

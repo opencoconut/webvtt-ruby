@@ -149,4 +149,17 @@ The text should change)
       puts
     end
   end
+
+  def test_parse_cue_with_no_text
+    webvtt = WebVTT.read("tests/subtitles/no_text.webvtt")
+    assert_equal 2, webvtt.cues.size
+    assert_equal "265", webvtt.cues[0].identifier
+    assert_equal "00:08:57.409", webvtt.cues[0].start
+    assert_equal "00:09:00.592", webvtt.cues[0].end
+    assert_equal "", webvtt.cues[0].text
+    assert_equal "266", webvtt.cues[1].identifier
+    assert_equal "00:09:00.593", webvtt.cues[1].start
+    assert_equal "00:09:02.373", webvtt.cues[1].end
+    assert_equal "", webvtt.cues[1].text
+  end
 end
