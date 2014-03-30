@@ -110,6 +110,7 @@ module WebVTT
         header = @webvtt.header
 
         if !header.include?("X-TIMESTAMP-MAP")
+          # FIXME: the value should be configurable
           header << "\nX-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000"
         end
 
