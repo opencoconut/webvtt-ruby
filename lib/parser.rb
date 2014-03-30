@@ -1,8 +1,5 @@
 module WebVTT
 
-  class MalformedFile < RuntimeError; end
-  class InputError < RuntimeError; end
-
   def self.read(file)
     File.new(file)
   end

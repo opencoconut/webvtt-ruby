@@ -1,7 +1,5 @@
 module WebVTT
 
-  class InputError < RuntimeError; end
-
   def self.segment(input, options={})
     if input.is_a?(String)
       input = File.new(input)
