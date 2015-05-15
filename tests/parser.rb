@@ -5,31 +5,31 @@ require "webvtt"
 class ParserTest < Test::Unit::TestCase
   def test_can_read_webvtt
     assert_nothing_raised(WebVTT::InputError) {
-      webvtt = WebVTT.read("tests/subtitles/test.webvtt")
-      assert_equal "test.webvtt", webvtt.filename
+      webvtt = WebVTT.read("tests/subtitles/test.vtt")
+      assert_equal "test.vtt", webvtt.filename
     }
   end
 
   def test_cant_read_webvtt
     assert_raise(WebVTT::InputError) {
-      webvtt = WebVTT.read("tests/subtitles/test_.webvtt")
+      webvtt = WebVTT.read("tests/subtitles/test_.vtt")
     }
   end
 
   def test_is_valid_webvtt
     assert_nothing_raised(WebVTT::MalformedFile) {
-      webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+      webvtt = WebVTT.read("tests/subtitles/test.vtt")
     }
   end
 
   def test_is_not_valid_webvtt
     assert_raise(WebVTT::MalformedFile) {
-      webvtt = WebVTT.read("tests/subtitles/notvalid.webvtt")
+      webvtt = WebVTT.read("tests/subtitles/notvalid.vtt")
     }
   end
 
   def test_list_cues
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_instance_of Array, webvtt.cues
     assert !webvtt.cues.empty?, "Cues should not be empty"
     assert_instance_of WebVTT::Cue, webvtt.cues[0]
@@ -37,12 +37,12 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_header
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_equal "WEBVTT\nX-TIMESTAMP-MAP=MPEGTS:900000,LOCAL:00:00:00.000", webvtt.header
   end
 
   def test_cue
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     cue = webvtt.cues[0]
     assert_equal "00:00:29.000", cue.start
     assert_equal "00:00:31.000", cue.end
@@ -52,7 +52,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_cue_identifier
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     cue = webvtt.cues[1]
     assert_equal "2", cue.identifier
     assert_equal "00:00:31.000", cue.start
@@ -63,7 +63,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_ignore_if_note
-    webvtt = WebVTT.read("tests/subtitles/withnote.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/withnote.vtt")
     assert_equal 3, webvtt.cues.size
     # ignoring the first cue which is a NOTE
     assert_equal "1", webvtt.cues[0].identifier
@@ -76,22 +76,22 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_total_length
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_equal 359, webvtt.total_length
   end
 
   def test_cue_length
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_equal 2.0, webvtt.cues[2].length
   end
 
   def test_file_to_webvtt
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
-    assert_equal webvtt.to_webvtt, File.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
+    assert_equal webvtt.to_webvtt, File.read("tests/subtitles/test.vtt")
   end
 
   def test_cue_to_webvtt
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_equal webvtt.cues[0].to_webvtt, %(00:00:29.000 --> 00:00:31.000 line:75%
 English subtitle 15 -Forced- (00:00:27.000)
 line:75%)
@@ -102,7 +102,7 @@ align:start line:0%)
   end
 
   def test_updating_webvtt
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     cue = webvtt.cues[0]
     cue.identifier = "1"
     cue.text = "The text should change"
@@ -120,7 +120,7 @@ The text should change)
 
   def test_reading_all_cues
     return
-    webvtt = WebVTT.read("tests/subtitles/withnote.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/withnote.vtt")
     webvtt.cues.each_with_index do |cue,i|
       puts "#{i}"
       puts "identifier: #{cue.identifier}"
@@ -139,7 +139,7 @@ The text should change)
 
   def test_parse_big_file
     return
-    webvtt = WebVTT.read("tests/subtitles/big_srt.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/big_srt.vtt")
     webvtt.cues.each_with_index do |cue,i|
       puts "*#{i}"
       puts "identifier: #{cue.identifier}"
@@ -151,7 +151,7 @@ The text should change)
   end
 
   def test_parse_cue_with_no_text
-    webvtt = WebVTT.read("tests/subtitles/no_text.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/no_text.vtt")
     assert_equal 2, webvtt.cues.size
     assert_equal "265", webvtt.cues[0].identifier
     assert_equal "00:08:57.409", webvtt.cues[0].start

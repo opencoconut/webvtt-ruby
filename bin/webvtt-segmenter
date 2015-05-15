@@ -20,7 +20,7 @@ opts = OptionParser.new do |opts|
     @options[:length] = dur.to_i
   end
 
-  opts.on("-o", "--output [PATH]", "Path where WebVTT segments will be saved. Default: fileSequence-%05d.webvtt") do |path|
+  opts.on("-o", "--output [PATH]", "Path where WebVTT segments will be saved. Default: fileSequence-%05d.vtt") do |path|
     @options[:output] = path
   end
 

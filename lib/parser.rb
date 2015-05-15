@@ -10,7 +10,7 @@ module WebVTT
     end
 
     srt = ::File.read(srt_file)
-    output ||= srt_file.gsub(".srt", ".webvtt")
+    output ||= srt_file.gsub(".srt", ".vtt")
 
     # convert timestamps and save the file
     srt.gsub!(/([0-9]{2}:[0-9]{2}:[0-9]{2})([,])([0-9]{3})/, '\1.\3')
@@ -51,7 +51,7 @@ module WebVTT
     end
 
     def save(output=nil)
-      output ||= @path.gsub(".srt", ".webvtt")
+      output ||= @path.gsub(".srt", ".vtt")
 
       File.open(output, "w") {|f| f.write(to_webvtt)}
       return output

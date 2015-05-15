@@ -6,7 +6,7 @@ require "fileutils"
 class ParserTest < Test::Unit::TestCase
 
   def test_segment_of_a_given_cue
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     segmenter = WebVTT::Segmenter.new(webvtt, :length => 5)
     assert_equal [5, 6], segmenter.find_segments(webvtt.cues[0])
     assert_equal [6], segmenter.find_segments(webvtt.cues[1])
@@ -17,7 +17,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_segment_file_of_a_given_cue
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     segmenter = WebVTT::Segmenter.new(webvtt, :length => 5)
     assert_equal [0, 1], segmenter.find_segment_files(webvtt.cues[0])
     assert_equal [1], segmenter.find_segment_files(webvtt.cues[1])
@@ -28,7 +28,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_split_to_files
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     sub_webvtt_files = WebVTT::Segmenter.new(webvtt, :length => 5).split_to_files
     assert_equal 68, sub_webvtt_files.size
     assert_equal 31, sub_webvtt_files[0].total_length
@@ -38,7 +38,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_generate_playlist
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     segmenter = WebVTT::Segmenter.new(webvtt, :length => 5, :playlist => "test.m3u8")
     subs = segmenter.split_to_files
     segmenter.generate_playlist(subs)
@@ -50,7 +50,7 @@ class ParserTest < Test::Unit::TestCase
   end
 
   def test_shortcut_method
-    res = WebVTT.segment("tests/subtitles/test.webvtt")
+    res = WebVTT.segment("tests/subtitles/test.vtt")
     assert_instance_of Array, res
     assert_equal 2, res.size
     assert_equal 35, res[1].size
@@ -61,7 +61,7 @@ class ParserTest < Test::Unit::TestCase
 
   def test_segment_to_webvtt_files
     return
-    webvtt = WebVTT.read("tests/subtitles/test.webvtt")
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
     sub_webvtt_files = WebVTT::Segmenter.new(webvtt, :length => 5).split
     assert_equal 67, sub_webvtt_files.size
     puts

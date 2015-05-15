@@ -23,7 +23,7 @@ To parse a webvtt file:
 ```ruby
 require "webvtt"
 
-webvtt = WebVTT.read("path/sub.webvtt")
+webvtt = WebVTT.read("path/sub.vtt")
 webvtt.cues.each do |cue|
   puts "identifier: #{cue.identifier}"
   puts "Start: #{cue.start}"
@@ -39,7 +39,7 @@ end
 You can also convert an SRT file to a standard WebVTT file:
 
 ```ruby
-webvtt = WebVTT.convert_from_srt("path/sub.srt", "path/sub.webvtt")
+webvtt = WebVTT.convert_from_srt("path/sub.srt", "path/sub.vtt")
 puts webvtt.to_webvtt
 ```
 
@@ -48,7 +48,7 @@ puts webvtt.to_webvtt
 Segmenting is required to work with HLS videos.
 
 ```ruby
-WebVTT.segment("subtitles/en.webvtt", :length => 10, :output => "subtitles/en-%05d.webvtt", :playlist => "subtitles/en.m3u8")
+WebVTT.segment("subtitles/en.vtt", :length => 10, :output => "subtitles/en-%05d.vtt", :playlist => "subtitles/en.m3u8")
 ```
 
 It will also generate the playlist in `m3u8`:
@@ -60,11 +60,11 @@ It will also generate the playlist in `m3u8`:
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXTINF:13,
-en-00000.webvtt
+en-00000.vtt
 #EXTINF:17,
-en-00001.webvtt
+en-00001.vtt
 #EXTINF:12,
-en-00002.webvtt
+en-00002.vtt
 #EXT-X-ENDLIST
 ```
 
@@ -87,7 +87,7 @@ demo-600000.m3u8
 You can also segment webvtt files using the command line `webvtt-segmenter`:
 
 ```
-$ webvtt-segmenter -i subtitles/en.webvtt -t 10 -m subtitles/en.m3u8 -o "subtitles/en-%05d.webvtt"
+$ webvtt-segmenter -i subtitles/en.vtt -t 10 -m subtitles/en.m3u8 -o "subtitles/en-%05d.vtt"
 ```
 
 ```
@@ -96,7 +96,7 @@ Usage: bin/webvtt-segmenter [--arg]
     -i, --input [PATH]               WebVTT or SRT file
     -b, --base-url [URL]             Base URL
     -t, --target-duration [DUR]      Duration of each segments. Default: 10
-    -o, --output [PATH]              Path where WebVTT segments will be saved. Default: fileSequence-%05d.webvtt
+    -o, --output [PATH]              Path where WebVTT segments will be saved. Default: fileSequence-%05d.vtt
     -m, --playlist [PATH]            Path where the playlist in m3u8 will be saved. Default: prog_index.m3u8
 ```
 

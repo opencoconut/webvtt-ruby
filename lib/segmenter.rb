@@ -23,7 +23,7 @@ module WebVTT
       @webvtt = webvtt
       @options = options
       @options[:length] ||= 10
-      @options[:output] ||= "fileSequence-%05d.webvtt"
+      @options[:output] ||= "fileSequence-%05d.vtt"
       @options[:playlist] ||= "prog_index.m3u8"
     end
 
