@@ -53,7 +53,9 @@ module WebVTT
     def save(output=nil)
       output ||= @path.gsub(".srt", ".vtt")
 
-      File.open(output, "w") {|f| f.write(to_webvtt)}
+      ::File.open(output, "w") do |f|
+        f.write(to_webvtt)
+      end
       return output
     end
 
@@ -107,15 +109,20 @@ module WebVTT
     end
 
     def start_in_sec
-      Cue.timestamp_in_sec(@start)
+      @start.to_f
     end
 
     def end_in_sec
-      Cue.timestamp_in_sec(@end)
+      @end.to_f
     end
 
     def length
-      end_in_sec - start_in_sec
+      @end.to_f - @start.to_f
+    end
+
+    def offset_by( offset_secs )
+      @start += offset_secs
+      @end   += offset_secs
     end
 
     def parse
@@ -130,11 +137,57 @@ module WebVTT
       end
 
       if lines[0].match(/([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}) -+> ([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/)
-        @start = $1
-        @end = $2
+        @start = Timestamp.new $1
+        @end = Timestamp.new $2
         @style = Hash[$3.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
       end
       @text = lines[1..-1].join("\n")
+    end
+  end
+
+  class Timestamp
+    def self.parse_seconds( timestamp )
+      if mres = timestamp.match(/\A([0-9]{2}):([0-9]{2}):([0-9]{2}\.[0-9]{3})\z/)
+        sec = mres[3].to_f # seconds and subseconds
+        sec += mres[2].to_f * 60 # minutes
+        sec += mres[1].to_f * 60 * 60 # hours
+      elsif mres = timestamp.match(/\A([0-9]{2}):([0-9]{2}\.[0-9]{3})\z/)
+        sec = mres[2].to_f # seconds and subseconds
+        sec += mres[1].to_f * 60 # minutes
+      else
+        raise ArgumentError.new("Invalid WebVTT timestamp format: #{timestamp.inspect}")
+      end
+
+      return sec
+    end
+
+    def initialize( time )
+      if time.is_a? Numeric
+        @timestamp = time
+      elsif time.is_a? String
+        @timestamp = Timestamp.parse_seconds( time )
+      else
+        raise ArgumentError.new("time not numeric nor a string")
+      end
+    end
+
+    def to_s
+      hms = [60,60].reduce( [ @timestamp ] ) { |m,o| m.unshift(m.shift.divmod(o)).flatten }
+      hms << (@timestamp.divmod(1).last * 1000).round
+
+      sprintf("%02d:%02d:%02d.%03d", *hms)
+    end
+
+    def to_f
+      @timestamp.to_f
+    end
+
+    def +(other)
+      Timestamp.new self.to_f + other.to_f
+    end
+
+    def duration( seconds )
+      self.class.new @timestamp + seconds
     end
   end
 end

@@ -1,9 +1,9 @@
 $LOAD_PATH << "lib/"
-require "test/unit"
+require "minitest/autorun"
 require "webvtt"
 require "fileutils"
 
-class ParserTest < Test::Unit::TestCase
+class ParserTest < Minitest::Test
 
   def test_segment_of_a_given_cue
     webvtt = WebVTT.read("tests/subtitles/test.vtt")
