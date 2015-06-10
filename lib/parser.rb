@@ -186,8 +186,5 @@ module WebVTT
       Timestamp.new self.to_f + other.to_f
     end
 
-    def duration( seconds )
-      self.class.new @timestamp + seconds
-    end
   end
 end
