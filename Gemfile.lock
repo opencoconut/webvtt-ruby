@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    webvtt-ruby (0.2.5)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.7.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  minitest
+  webvtt-ruby!
+
+BUNDLED WITH
+   1.10.2

@@ -1,29 +1,21 @@
 $LOAD_PATH << "lib/"
-require "test/unit"
+require "minitest/autorun"
 require "webvtt"
 
-class ParserTest < Test::Unit::TestCase
+class ParserTest < Minitest::Test
   def test_can_read_webvtt
-    assert_nothing_raised(WebVTT::InputError) {
-      webvtt = WebVTT.read("tests/subtitles/test.vtt")
-      assert_equal "test.vtt", webvtt.filename
-    }
+    webvtt = WebVTT.read("tests/subtitles/test.vtt")
+    assert_equal "test.vtt", webvtt.filename
   end
 
   def test_cant_read_webvtt
-    assert_raise(WebVTT::InputError) {
+    assert_raises(WebVTT::InputError) {
       webvtt = WebVTT.read("tests/subtitles/test_.vtt")
     }
   end
 
-  def test_is_valid_webvtt
-    assert_nothing_raised(WebVTT::MalformedFile) {
-      webvtt = WebVTT.read("tests/subtitles/test.vtt")
-    }
-  end
-
   def test_is_not_valid_webvtt
-    assert_raise(WebVTT::MalformedFile) {
+    assert_raises(WebVTT::MalformedFile) {
       webvtt = WebVTT.read("tests/subtitles/notvalid.vtt")
     }
   end
@@ -44,8 +36,8 @@ class ParserTest < Test::Unit::TestCase
   def test_cue
     webvtt = WebVTT.read("tests/subtitles/test.vtt")
     cue = webvtt.cues[0]
-    assert_equal "00:00:29.000", cue.start
-    assert_equal "00:00:31.000", cue.end
+    assert_equal "00:00:29.000", cue.start.to_s
+    assert_equal "00:00:31.000", cue.end.to_s
     assert_instance_of Hash, cue.style
     assert_equal "75%", cue.style["line"]
     assert_equal "English subtitle 15 -Forced- (00:00:27.000)\nline:75%", cue.text
@@ -55,8 +47,8 @@ class ParserTest < Test::Unit::TestCase
     webvtt = WebVTT.read("tests/subtitles/test.vtt")
     cue = webvtt.cues[1]
     assert_equal "2", cue.identifier
-    assert_equal "00:00:31.000", cue.start
-    assert_equal "00:00:33.000", cue.end
+    assert_equal "00:00:31.000", cue.start.to_s
+    assert_equal "00:00:33.000", cue.end.to_s
     assert_equal ["align", "line"].sort, cue.style.keys.sort
     assert_equal ["start", "0%"].sort, cue.style.values.sort
     assert_equal "English subtitle 16 -Unforced- (00:00:31.000)\nalign:start line:0%", cue.text
@@ -154,12 +146,53 @@ The text should change)
     webvtt = WebVTT.read("tests/subtitles/no_text.vtt")
     assert_equal 2, webvtt.cues.size
     assert_equal "265", webvtt.cues[0].identifier
-    assert_equal "00:08:57.409", webvtt.cues[0].start
-    assert_equal "00:09:00.592", webvtt.cues[0].end
+    assert_equal "00:08:57.409", webvtt.cues[0].start.to_s
+    assert_equal "00:09:00.592", webvtt.cues[0].end.to_s
     assert_equal "", webvtt.cues[0].text
     assert_equal "266", webvtt.cues[1].identifier
-    assert_equal "00:09:00.593", webvtt.cues[1].start
-    assert_equal "00:09:02.373", webvtt.cues[1].end
+    assert_equal "00:09:00.593", webvtt.cues[1].start.to_s
+    assert_equal "00:09:02.373", webvtt.cues[1].end.to_s
     assert_equal "", webvtt.cues[1].text
   end
+  
+  def test_cue_offset_by
+    cue = WebVTT::Cue.new <<-CUE
+    00:00:01.000 --> 00:00:25.432
+    Test Cue
+    CUE
+    assert_equal 1.0, cue.start.to_f
+    assert_equal 25.432, cue.end.to_f
+    cue.offset_by( 12.0 )
+    assert_equal 13.0, cue.start.to_f
+    assert_equal 37.432, cue.end.to_f
+  end
+
+  def test_timestamp_from_string
+    ts_str = "00:05:31.522"
+    ts = WebVTT::Timestamp.new( ts_str )
+    assert_equal ts_str, ts.to_s
+    assert_equal (5*60 + 31.522), ts.to_f
+  end
+
+  def test_timestamp_from_number
+    ts_f = (7*60 + 12.111)
+    ts = WebVTT::Timestamp.new( ts_f )
+    assert_equal "00:07:12.111", ts.to_s
+    assert_equal ts_f, ts.to_f
+  end
+
+  def test_timestamp_errors_from_unknown_type
+    assert_raises ArgumentError do
+      WebVTT::Timestamp.new( nil )
+    end
+  end
+
+  def test_timestamp_addition
+    ts = WebVTT::Timestamp.new( "01:47:32.004" )
+    ts2 = ts + (4*60 + 30)
+    assert_equal "01:52:02.004", ts2.to_s
+    ts3 = ts + ts2
+    assert_equal "03:39:34.008", ts3.to_s
+  end
+
 end
