@@ -17,7 +17,7 @@ module WebVTT
     # normalize new line character
     srt.gsub!("\r\n", "\n")
 
-    srt = "WEBVTT\n\n#{srt}"
+    srt = "WEBVTT\n\n#{srt}".strip
     ::File.open(output, "w") {|f| f.write(srt)}
 
     return File.new(output)
