@@ -156,7 +156,7 @@ The text should change)
   end
   
   def test_cue_offset_by
-    cue = WebVTT::Cue.new <<-CUE
+    cue = WebVTT::Cue.parse <<-CUE
     00:00:01.000 --> 00:00:25.432
     Test Cue
     CUE
@@ -193,6 +193,17 @@ The text should change)
     assert_equal "01:52:02.004", ts2.to_s
     ts3 = ts + ts2
     assert_equal "03:39:34.008", ts3.to_s
+  end
+
+  def test_build_cue
+    cue = WebVTT::Cue.new
+    cue.start = WebVTT::Timestamp.new 0
+    cue.end = WebVTT::Timestamp.new 12
+    cue.text = "Built from scratch"
+    output = ""
+    output << "00:00:00.000 --> 00:00:12.000\n"
+    output << "Built from scratch"
+    assert_equal output, cue.to_webvtt
   end
 
 end
