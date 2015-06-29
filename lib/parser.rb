@@ -72,7 +72,7 @@ module WebVTT
 
       @cues = []
       cues.each do |cue|
-        cue_parsed = Cue.new(cue.strip)
+        cue_parsed = Cue.parse(cue.strip)
         if !cue_parsed.text.nil?
           @cues << cue_parsed
         end
@@ -84,9 +84,15 @@ module WebVTT
   class Cue
     attr_accessor :identifier, :start, :end, :style, :text
 
-    def initialize(cue)
+    def initialize(cue = nil)
       @content = cue
-      parse
+      @style = {}
+    end
+
+    def self.parse(cue)
+      cue = Cue.new(cue)
+      cue.parse
+      return cue
     end
 
     def to_webvtt
