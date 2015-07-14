@@ -9,5 +9,5 @@ module WebVTT
   class InputError < RuntimeError; end
 end
 
-require "parser"
-require "segmenter"
+require "webvtt/parser"
+require "webvtt/segmenter"
