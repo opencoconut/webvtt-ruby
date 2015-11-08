@@ -142,6 +142,10 @@ module WebVTT
         lines.shift
       end
 
+      if lines.empty?
+        return
+      end
+
       if lines[0].match(/([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}) -+> ([0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/)
         @start = Timestamp.new $1
         @end = Timestamp.new $2
