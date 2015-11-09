@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'webvtt-ruby'
-  s.version       = '0.3.0'
+  s.version       = '0.3.2'
   s.summary       = "WebVTT parser and segmenter in ruby"
   s.description   = "WebVTT parser and segmenter in ruby for HTML5 and HTTP Live Streaming (HLS)."
   s.authors       = ["Bruno Celeste"]
