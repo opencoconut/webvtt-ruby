@@ -206,4 +206,8 @@ The text should change)
     assert_equal output, cue.to_webvtt
   end
 
+  def test_invalid_cue
+    webvtt = WebVTT.convert_from_srt("tests/subtitles/invalid_cue.srt")
+    assert_equal 1, webvtt.cues.size
+  end
 end
