@@ -4,13 +4,10 @@ module WebVTT
     File.new(file)
   end
 
-  def self.convert_from_srt(srt_file, output=nil)
-    if !::File.exists?(srt_file)
-      raise InputError, "SRT file not found"
+  def self.convert_from_srt_content(srt, output)
+    if srt.empty?
+      raise InputError, "SRT content is empty"
     end
-
-    srt = ::File.read(srt_file)
-    output ||= srt_file.gsub(".srt", ".vtt")
 
     # convert timestamps and save the file
     srt.gsub!(/([0-9]{2}:[0-9]{2}:[0-9]{2})([,])([0-9]{3})/, '\1.\3')
@@ -21,6 +18,17 @@ module WebVTT
     ::File.open(output, "w") {|f| f.write(srt)}
 
     return File.new(output)
+  end
+
+  def self.convert_from_srt(srt_file, output=nil)
+    if !::File.exists?(srt_file)
+      raise InputError, "SRT file not found"
+    end
+
+    output ||= srt_file.gsub(".srt", ".vtt")
+
+    srt = ::File.read(srt_file)
+    return self.convert_from_srt_content(srt, output)
   end
 
   class File
