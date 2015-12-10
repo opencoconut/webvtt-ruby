@@ -150,6 +150,8 @@ module WebVTT
         @start = Timestamp.new $1
         @end = Timestamp.new $2
         @style = Hash[$3.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
+      else
+        return
       end
       @text = lines[1..-1].join("\n")
     end

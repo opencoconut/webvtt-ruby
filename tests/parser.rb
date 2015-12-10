@@ -210,4 +210,10 @@ The text should change)
     webvtt = WebVTT.convert_from_srt("tests/subtitles/invalid_cue.srt")
     assert_equal 1, webvtt.cues.size
   end
+
+  def test_invalid_cue_time
+    cue_string = open("tests/subtitles/invalid_cue_time.srt").read
+    cue = WebVTT::Cue.parse(cue_string)
+    assert_nil cue.text
+  end
 end
