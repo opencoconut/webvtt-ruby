@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module WebVTT
 
   def self.segment(input, options={})
@@ -25,6 +27,25 @@ module WebVTT
       @options[:length] ||= 10
       @options[:output] ||= "fileSequence-%05d.vtt"
       @options[:playlist] ||= "prog_index.m3u8"
+
+      # a dirty hack to check if output and playlist are ending with / (indicating a directory) and if so use the default filename and playlist name and create directory which is required.
+
+      if @options[:output].end_with?('/')
+        @options[:output] = "#{@options[:output]}fileSequence-%05d.vtt"
+      end
+      if @options[:playlist].end_with?('/')
+        @options[:playlist] = "#{@options[:playlist]}prog_index.m3u8"
+      end
+
+      output_dirname = ::File.dirname(@options[:output])
+      playlist_dirname = ::File.dirname(@options[:playlist])
+
+      unless ::File.directory?(output_dirname)
+        ::FileUtils.mkdir_p(output_dirname)
+      end
+      unless ::File.directory?(playlist_dirname)
+        ::FileUtils.mkdir_p(playlist_dirname)
+      end
     end
 
     def find_segment_files(cue)
