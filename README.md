@@ -116,6 +116,6 @@ Usage: bin/webvtt-segmenter [--arg]
 
 **Bruno Celeste**
 
-* http://www.heywatchencoding.com
-* bruno@heywatch.com
+* http://coconut.co
+* bruno@coconut.co
 * [@sadikzzz](http://twitter.com/sadikzzz)
