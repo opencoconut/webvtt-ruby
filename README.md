@@ -118,4 +118,4 @@ Usage: bin/webvtt-segmenter [--arg]
 
 * http://coconut.co
 * bruno@coconut.co
-* [@sadikzzz](http://twitter.com/sadikzzz)
+* [@brunoceleste](http://twitter.com/brunoceleste)
