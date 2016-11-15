@@ -220,4 +220,13 @@ The text should change)
     webvtt = WebVTT.convert_from_srt("tests/subtitles/invalid_cue.srt")
     assert_equal 1, webvtt.cues.size
   end
+
+  def test_can_validate_webvtt_with_carriage_returns
+    webvtt = WebVTT::File.new("tests/subtitles/test_carriage_returns.vtt")
+    assert_instance_of Array, webvtt.cues
+    assert !webvtt.cues.empty?, "Cues should not be empty"
+    assert_instance_of WebVTT::Cue, webvtt.cues[0]
+    assert_equal 15, webvtt.cues.size
+  end
+
 end

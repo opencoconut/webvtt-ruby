@@ -34,7 +34,7 @@ module WebVTT
 
       @path = webvtt_file
       @filename = ::File.basename(@path)
-      @content = ::File.read(webvtt_file).gsub("\r\n", "\n") # normalizing new line character
+      @content = ::File.read(webvtt_file).gsub("\r\n", "\n").gsub("\r","\n") # normalizing new line character
       parse
     end
 
