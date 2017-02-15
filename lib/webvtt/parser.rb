@@ -4,6 +4,10 @@ module WebVTT
     File.new(file)
   end
 
+  def self.from_blob(content)
+    Blob.new(content)
+  end
+
   def self.convert_from_srt(srt_file, output=nil)
     if !::File.exists?(srt_file)
       raise InputError, "SRT file not found"
@@ -23,18 +27,12 @@ module WebVTT
     return File.new(output)
   end
 
-  class File
-    attr_reader :header, :path, :filename
+  class Blob
+    attr_reader :header
     attr_accessor :cues
 
-    def initialize(webvtt_file)
-      if !::File.exists?(webvtt_file)
-        raise InputError, "WebVTT file not found"
-      end
-
-      @path = webvtt_file
-      @filename = ::File.basename(@path)
-      @content = ::File.read(webvtt_file).gsub("\r\n", "\n").gsub("\r","\n") # normalizing new line character
+    def initialize(content)
+      @content = content.gsub("\r\n", "\n").gsub("\r","\n") # normalizing new line character
       parse
     end
 
@@ -48,15 +46,6 @@ module WebVTT
 
     def actual_total_length
       @cues.last.end_in_sec - @cues.first.start_in_sec
-    end
-
-    def save(output=nil)
-      output ||= @path.gsub(".srt", ".vtt")
-
-      ::File.open(output, "w") do |f|
-        f.write(to_webvtt)
-      end
-      return output
     end
 
     def parse
@@ -78,6 +67,29 @@ module WebVTT
         end
       end
       @cues
+    end
+  end
+
+  class File < Blob
+    attr_reader :path, :filename
+
+    def initialize(webvtt_file)
+      if !::File.exists?(webvtt_file)
+        raise InputError, "WebVTT file not found"
+      end
+
+      @path = webvtt_file
+      @filename = ::File.basename(@path)
+      super(::File.read(webvtt_file))
+    end
+
+    def save(output=nil)
+      output ||= @path.gsub(".srt", ".vtt")
+
+      ::File.open(output, "w") do |f|
+        f.write(to_webvtt)
+      end
+      return output
     end
   end
 
