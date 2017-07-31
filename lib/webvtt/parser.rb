@@ -31,9 +31,16 @@ module WebVTT
     attr_reader :header
     attr_accessor :cues
 
-    def initialize(content)
-      @content = content.gsub("\r\n", "\n").gsub("\r","\n") # normalizing new line character
-      parse
+    def initialize(content = nil)
+      @cues = []
+
+      if content
+        parse(
+          content.gsub("\r\n", "\n").gsub("\r","\n") # normalizing new line character
+        )
+      else
+        @header = 'WEBVTT'
+      end
     end
 
     def to_webvtt
@@ -48,11 +55,11 @@ module WebVTT
       @cues.last.end_in_sec - @cues.first.start_in_sec
     end
 
-    def parse
+    def parse(content)
       # remove bom first
-      @content.gsub!("\uFEFF", '')
+      content.gsub!("\uFEFF", '')
 
-      cues = @content.split("\n\n")
+      cues = content.split("\n\n")
       @header = cues.shift
       header_lines = @header.split("\n").map(&:strip)
       if (header_lines[0] =~ /^WEBVTT/).nil?
