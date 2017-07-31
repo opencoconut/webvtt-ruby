@@ -70,6 +70,11 @@ class ParserTest < Minitest::Test
     assert_equal "English subtitle 16 -Unforced- (00:00:31.000)\nalign:start line:0%", cue.text
   end
 
+  def test_multiple_line_separators
+    webvtt = WebVTT.read("tests/subtitles/test_multiple_line_separators.vtt")
+    assert_equal 2, webvtt.cues.length
+  end
+
   def test_ignore_if_note
     webvtt = WebVTT.read("tests/subtitles/withnote.vtt")
     assert_equal 3, webvtt.cues.size
