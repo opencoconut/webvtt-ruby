@@ -20,6 +20,12 @@ class ParserTest < Minitest::Test
     }
   end
 
+  def test_can_create_empty_webvtt
+    webvtt = WebVTT::Blob.new
+    assert_equal 'WEBVTT', webvtt.header
+    assert_equal [], webvtt.cues
+  end
+
   def test_list_cues
     webvtt = WebVTT.read("tests/subtitles/test.vtt")
     assert_instance_of Array, webvtt.cues
@@ -169,7 +175,7 @@ The text should change)
     assert_equal "00:09:02.373", webvtt.cues[1].end.to_s
     assert_equal "", webvtt.cues[1].text
   end
-  
+
   def test_cue_offset_by
     cue = WebVTT::Cue.parse <<-CUE
     00:00:01.000 --> 00:00:25.432
