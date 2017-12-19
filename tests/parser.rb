@@ -150,6 +150,17 @@ The text should change)
     assert_equal 2, webvtt.cues.size
   end
 
+  def test_convert_weird_format_srt_to_webvtt
+    webvtt = WebVTT.convert_from_srt("tests/subtitles/weird_format.srt")
+    correct_webvtt = WebVTT.read("tests/subtitles/weird_format_corrected.vtt")
+
+    converted_cues = webvtt.cues.map { |cue| cue.start.to_s }
+    correct_cues = correct_webvtt.cues.map { |cue| cue.start.to_s }
+
+    assert_instance_of WebVTT::File, webvtt
+    assert_equal correct_cues, converted_cues
+  end
+
   def test_parse_big_file
     return
     webvtt = WebVTT.read("tests/subtitles/big_srt.vtt")
