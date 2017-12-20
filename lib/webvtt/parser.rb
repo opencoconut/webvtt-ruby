@@ -16,6 +16,8 @@ module WebVTT
     srt = ::File.read(srt_file)
     output ||= srt_file.gsub(".srt", ".vtt")
 
+    # normalize timestamps in srt
+    srt.gsub!(/(:|^)(\d)(,|:)/, '\10\2\3')
     # convert timestamps and save the file
     srt.gsub!(/([0-9]{2}:[0-9]{2}:[0-9]{2})([,])([0-9]{3})/, '\1.\3')
     # normalize new line character
@@ -58,7 +60,7 @@ module WebVTT
     def parse(content)
       # remove bom first
       content.gsub!("\uFEFF", '')
-      
+
       cues = content.split(/\n\n+/)
 
       @header = cues.shift
