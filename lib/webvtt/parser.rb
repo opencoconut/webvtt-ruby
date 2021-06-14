@@ -57,6 +57,30 @@ module WebVTT
       @cues.last.end_in_sec - @cues.first.start_in_sec
     end
 
+    def append(other_blob:, offset_secs:)
+      id_offset = @cues.last&.identifier&.to_i
+      id_offset ||= 0
+
+      other_blob.offset_by(offset_secs)
+      other_blob.offset_ids_by(id_offset)
+
+      @cues.concat(other_blob.cues)
+    end
+
+    def offset_by(offset_secs)
+      @cues.map do |cue|
+        cue.offset_by(offset_secs)
+        cue
+      end
+    end
+
+    def offset_ids_by(offset)
+      @cues.map do |cue|
+        cue.offset_id_by(offset)
+        cue
+      end
+    end
+
     def parse(content)
       # remove bom first
       content.gsub!("\uFEFF", '')
@@ -146,6 +170,10 @@ module WebVTT
 
     def length
       @end.to_f - @start.to_f
+    end
+
+    def offset_id_by( offset )
+      @identifier = (@identifier.to_i + offset).to_s
     end
 
     def offset_by( offset_secs )

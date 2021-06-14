@@ -199,6 +199,60 @@ The text should change)
     assert_equal 37.432, cue.end.to_f
   end
 
+  def test_blob_append
+    webvtt1 = WebVTT.convert_from_srt("tests/subtitles/test_from_srt.srt")
+    webvtt2 = WebVTT.convert_from_srt("tests/subtitles/test_from_srt.srt")
+    assert_equal 2, webvtt1.cues.size
+    assert_equal 2, webvtt2.cues.size
+    assert_equal 0.5, webvtt1.cues.first.start.to_f
+    assert_equal 13.0, webvtt1.cues.first.end.to_f
+    assert_equal 15.0, webvtt1.cues.last.start.to_f
+    assert_equal 18.0, webvtt1.cues.last.end.to_f
+    assert_equal 2, webvtt1.cues.last.identifier.to_i
+    webvtt1.append(other_blob: webvtt2, offset_secs: 18.1)
+    assert_equal 4, webvtt1.cues.size
+    assert_equal 0.5, webvtt1.cues.first.start.to_f
+    assert_equal 13.0, webvtt1.cues.first.end.to_f
+    assert_equal 33.1, webvtt1.cues.last.start.to_f
+    assert_equal 36.1, webvtt1.cues.last.end.to_f
+    assert_equal 4, webvtt1.cues.last.identifier.to_i
+  end
+
+  def test_blob_offset_by
+    webvtt = WebVTT.convert_from_srt("tests/subtitles/test_from_srt.srt")
+    assert_equal 2, webvtt.cues.size
+    assert_equal 0.5, webvtt.cues.first.start.to_f
+    assert_equal 13.0, webvtt.cues.first.end.to_f
+    assert_equal 15.0, webvtt.cues.last.start.to_f
+    assert_equal 18.0, webvtt.cues.last.end.to_f
+    webvtt.offset_by( 12.3 )
+    assert_equal 12.8, webvtt.cues.first.start.to_f
+    assert_equal 25.3, webvtt.cues.first.end.to_f
+    assert_equal 27.3, webvtt.cues.last.start.to_f
+    assert_equal 30.3, webvtt.cues.last.end.to_f
+  end
+
+  def test_blob_offset_ids_by
+    webvtt = WebVTT.convert_from_srt("tests/subtitles/test_from_srt.srt")
+    assert_equal 2, webvtt.cues.size
+    assert_equal 1, webvtt.cues.first.identifier.to_i
+    assert_equal 2, webvtt.cues.last.identifier.to_i
+    webvtt.offset_ids_by(2)
+    assert_equal 3, webvtt.cues.first.identifier.to_i
+    assert_equal 4, webvtt.cues.last.identifier.to_i
+  end
+
+  def test_cue_offset_id_by
+    cue = WebVTT::Cue.parse <<-CUE
+    1
+    00:00:01.000 --> 00:00:25.432
+    Test Cue
+    CUE
+    assert_equal "1", cue.identifier
+    cue.offset_id_by( 3 )
+    assert_equal "4", cue.identifier
+  end
+
   def test_timestamp_from_string
     ts_str = "00:05:31.522"
     ts = WebVTT::Timestamp.new( ts_str )
