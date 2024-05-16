@@ -251,4 +251,9 @@ The text should change)
     assert_equal 15, webvtt.cues.size
   end
 
+  def test_invalid_vtt_without_milliseconds
+    assert_raises WebVTT::MalformedFile do
+      vtt = WebVTT::File.new('tests/subtitles/no_milliseconds.vtt')
+    end
+  end
 end

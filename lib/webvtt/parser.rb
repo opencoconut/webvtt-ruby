@@ -172,6 +172,8 @@ module WebVTT
         @start = Timestamp.new $1
         @end = Timestamp.new $3
         @style = Hash[$5.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
+      else
+        raise WebVTT::MalformedFile
       end
       @text = lines[1..-1].join("\n")
     end
