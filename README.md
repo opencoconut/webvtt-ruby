@@ -1,6 +1,6 @@
 # WebVTT Ruby parser and segmenter
 
-The [WebVTT format](http://dev.w3.org/html5/webvtt/) is a standard captionning format used for HTML5 videos and HTTP Live Streaming (HLS).
+The [WebVTT format](https://www.w3.org/TR/webvtt1/) is a standard captionning format used for HTML5 videos and HTTP Live Streaming (HLS).
 
 ## Installation
 
