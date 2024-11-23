@@ -43,7 +43,7 @@ class ParserTest < Minitest::Test
     subs = segmenter.split_to_files
     segmenter.generate_playlist(subs)
 
-    assert File.exists?("test.m3u8")
+    assert File.exist?("test.m3u8")
     # clean up
     subs.each {|f| FileUtils.rm(f.filename)}
     FileUtils.rm("test.m3u8")

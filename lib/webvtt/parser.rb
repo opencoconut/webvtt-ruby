@@ -9,7 +9,7 @@ module WebVTT
   end
 
   def self.convert_from_srt(srt_file, output=nil)
-    if !::File.exists?(srt_file)
+    if !::File.exist?(srt_file)
       raise InputError, "SRT file not found"
     end
 
@@ -84,7 +84,7 @@ module WebVTT
     attr_reader :path, :filename
 
     def initialize(webvtt_file)
-      if !::File.exists?(webvtt_file)
+      if !::File.exist?(webvtt_file)
         raise InputError, "WebVTT file not found"
       end
 
@@ -175,6 +175,8 @@ module WebVTT
         @start = Timestamp.new $1
         @end = Timestamp.new $3
         @style = Hash[$5.strip.split(" ").map{|s| s.split(":").map(&:strip) }]
+      else
+        raise WebVTT::MalformedFile
       end
       @text = lines[1..-1].join("\n")
     end
