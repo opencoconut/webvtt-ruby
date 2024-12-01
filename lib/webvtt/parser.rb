@@ -158,6 +158,9 @@ module WebVTT
 
       # it's a note, ignore
       return if lines[0] =~ /NOTE/
+      
+      # youtube loves empty lines
+      return if lines.nil? or lines[0].nil?
 
       if !lines[0].include?("-->")
         @identifier = lines[0]
