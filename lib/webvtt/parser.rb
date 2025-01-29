@@ -156,8 +156,8 @@ module WebVTT
     def parse
       lines = @content.split("\n").map(&:strip)
 
-      # it's a note, ignore
-      return if lines[0] =~ /NOTE/
+      # it's a note or style section, ignore
+      return if lines[0] =~ /NOTE|STYLE/
 
       if !lines[0].include?("-->")
         @identifier = lines[0]
@@ -175,7 +175,11 @@ module WebVTT
       else
         raise WebVTT::MalformedFile
       end
-      @text = lines[1..-1].join("\n")
+
+
+
+      @text = lines[1..-1].join("\n").
+        gsub(/<.+?>/, '').strip # remove style tags from text
     end
   end
 

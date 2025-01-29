@@ -82,6 +82,14 @@ class ParserTest < Minitest::Test
     assert_equal "1", webvtt.cues[0].identifier
   end
 
+  def test_ignore_style_and_remove_style_tag_from_cue_text
+    webvtt = WebVTT.read("tests/subtitles/withstyle.vtt")
+    assert_equal 1, webvtt.cues.size
+    # ignoring the first cue which is a NOTE
+    assert_equal "hello", webvtt.cues[0].identifier
+    assert_equal "Hello world.", webvtt.cues[0].text
+  end
+
   def test_timestamp_in_sec
     assert_equal 60.0, WebVTT::Cue.timestamp_in_sec("00:01:00.000")
     assert_equal 126.23, WebVTT::Cue.timestamp_in_sec("00:02:06.230")
