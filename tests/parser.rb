@@ -88,6 +88,7 @@ class ParserTest < Minitest::Test
     # ignoring the first cue which is a NOTE
     assert_equal "hello", webvtt.cues[0].identifier
     assert_equal "Hello world.", webvtt.cues[0].text
+    assert_equal "Hello <b>world</b>.", webvtt.cues[0].raw_text
   end
 
   def test_timestamp_in_sec

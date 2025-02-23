@@ -104,7 +104,7 @@ module WebVTT
   end
 
   class Cue
-    attr_accessor :identifier, :start, :end, :style, :text
+    attr_accessor :identifier, :start, :end, :style, :text, :raw_text
 
     def initialize(cue = nil)
       @content = cue
@@ -177,9 +177,8 @@ module WebVTT
       end
 
 
-
-      @text = lines[1..-1].join("\n").
-        gsub(/<.+?>/, '').strip # remove style tags from text
+      @raw_text = lines[1..-1].join("\n")
+      @text = @raw_text.gsub(/<.+?>/, '').strip # remove style tags from text
     end
   end
 
