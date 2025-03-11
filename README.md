@@ -30,6 +30,7 @@ webvtt.cues.each do |cue|
   puts "End: #{cue.end}"
   puts "Style: #{cue.style.inspect}"
   puts "Text: #{cue.text}"
+  puts "Plain text: #{cue.plain_text}" # text without style tags if any
   puts "--"
 end
 ```
