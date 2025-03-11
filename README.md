@@ -29,8 +29,8 @@ webvtt.cues.each do |cue|
   puts "Start: #{cue.start}"
   puts "End: #{cue.end}"
   puts "Style: #{cue.style.inspect}"
-  puts "Text: #{cue.text}" # text without style tags (if any)
-  puts "Raw text: #{cue.raw_text}" # text with style tags
+  puts "Text: #{cue.text}"
+  puts "Plain text: #{cue.plain_text}" # text without style tags if any
   puts "--"
 end
 ```

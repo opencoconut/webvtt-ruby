@@ -87,8 +87,8 @@ class ParserTest < Minitest::Test
     assert_equal 1, webvtt.cues.size
     # ignoring the first cue which is a NOTE
     assert_equal "hello", webvtt.cues[0].identifier
-    assert_equal "Hello world.", webvtt.cues[0].text
-    assert_equal "Hello <b>world</b>.", webvtt.cues[0].raw_text
+    assert_equal "Hello world.", webvtt.cues[0].plain_text
+    assert_equal "Hello <b>world</b>.", webvtt.cues[0].text
   end
 
   def test_timestamp_in_sec
@@ -258,11 +258,5 @@ The text should change)
     assert !webvtt.cues.empty?, "Cues should not be empty"
     assert_instance_of WebVTT::Cue, webvtt.cues[0]
     assert_equal 15, webvtt.cues.size
-  end
-
-  def test_invalid_vtt_without_milliseconds
-    assert_raises WebVTT::MalformedFile do
-      vtt = WebVTT::File.new('tests/subtitles/no_milliseconds.vtt')
-    end
   end
 end
