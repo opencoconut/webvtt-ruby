@@ -56,6 +56,12 @@ class ParserTest < Minitest::Test
     assert_equal "00:00:02.000", cue.end.to_s
     assert_instance_of Hash, cue.style
     assert_equal "Some text", cue.text
+
+    cue = webvtt.cues[1]
+    assert_equal "00:00:02.000", cue.start.to_s
+    assert_equal "00:00:03.000", cue.end.to_s
+    assert_instance_of Hash, cue.style
+    assert_equal "Some other text", cue.text
   end
 
 
