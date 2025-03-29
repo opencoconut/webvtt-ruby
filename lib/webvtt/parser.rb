@@ -168,7 +168,7 @@ module WebVTT
         return
       end
 
-      if lines[0].match(/(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3}) -+> (([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/)
+      if lines[0].match(/(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})[ \t]+-->[ \t]+(([0-9]{2}:)?[0-9]{2}:[0-9]{2}\.[0-9]{3})(.*)/)
         @start = Timestamp.new $1
         @end = Timestamp.new $3
         @style = Hash[$5.strip.split(" ").map{|s| s.split(":").map(&:strip) }]

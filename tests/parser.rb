@@ -49,6 +49,22 @@ class ParserTest < Minitest::Test
     assert_equal "English subtitle 15 -Forced- (00:00:27.000)\nline:75%", cue.text
   end
 
+  def test_cue_multiple_spaces_in_cue
+    webvtt = WebVTT.read("tests/subtitles/test_multiple_spaces_in_cue.vtt")
+    cue = webvtt.cues[0]
+    assert_equal "00:00:01.000", cue.start.to_s
+    assert_equal "00:00:02.000", cue.end.to_s
+    assert_instance_of Hash, cue.style
+    assert_equal "Some text", cue.text
+
+    cue = webvtt.cues[1]
+    assert_equal "00:00:02.000", cue.start.to_s
+    assert_equal "00:00:03.000", cue.end.to_s
+    assert_instance_of Hash, cue.style
+    assert_equal "Some other text", cue.text
+  end
+
+
   def test_cue_non_hours
     webvtt = WebVTT.read("tests/subtitles/test_mmss_format.vtt")
     cue = webvtt.cues[0]
